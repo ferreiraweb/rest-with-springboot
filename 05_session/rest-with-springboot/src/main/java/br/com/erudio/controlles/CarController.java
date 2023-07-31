@@ -14,48 +14,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.erudio.models.Person;
-import br.com.erudio.services.PersonService;
+import br.com.erudio.services.CarService;
 
-@RestController()
-@RequestMapping("/persons")
-public class PersonController {
+import br.com.erudio.models.Car;
+
+@RestController
+@RequestMapping("/cars")
+public class CarController {
 
 	@Autowired
-	PersonService service;
-	
-	
+	private CarService service;
+
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person fingById( @PathVariable("id") Long id) {
-		
-		Person person = service.findById(id);
-		return person;
+	public Car findById(@PathVariable("id") Long id) {
+		return service.findById(id);
 	}
-	
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Person> findAll() {
+	public List<Car> findAll() {
 		return service.findAll();
 	}
 
-	@PostMapping(
-			produces = MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE
-			)
-	public Person create(@RequestBody Person person) {
-		return service.create(person);
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Car create(@RequestBody Car car) {
+
+		return service.create(car);
+
 	}
-	
-	@PutMapping(
-			produces=MediaType.APPLICATION_JSON_VALUE,
-			consumes = MediaType.APPLICATION_JSON_VALUE
-			)
-	public Person update(@RequestBody Person person) {
-		return service.update(person);
+
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public Car update(@RequestBody Car car) {
+		return service.update(car);
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+
 }
