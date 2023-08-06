@@ -51,6 +51,8 @@ public class CarService {
 		entity.setModel(car.getModel());
 		entity.setYear(car.getYear());
 		
+		repository.save(entity);
+		
 		return entity;
 	}
 	
