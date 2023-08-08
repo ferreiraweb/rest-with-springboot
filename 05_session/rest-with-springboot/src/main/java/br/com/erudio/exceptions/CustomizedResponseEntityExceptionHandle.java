@@ -68,6 +68,19 @@ public class CustomizedResponseEntityExceptionHandle extends ResponseEntityExcep
 				
 	}
 	
+	@ExceptionHandler(RequiredObjectIsNullExceptions.class)
+	public final ResponseEntity<ExceptionResponse> handleBadRequestObjectIsNullExceptions(
+			Exception ex, WebRequest request
+			){
+		ExceptionResponse exceptionResponse = new ExceptionResponse(
+				new Date(),
+				ex.getMessage(),
+				request.getDescription(false)
+				);
+		return new ResponseEntity<ExceptionResponse>(exceptionResponse, HttpStatus.BAD_REQUEST);
+				
+	}
+	
 	
 	
 }

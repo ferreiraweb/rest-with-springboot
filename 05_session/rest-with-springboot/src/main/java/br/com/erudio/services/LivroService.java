@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.erudio.exceptions.RequiredObjectIsNullExceptions;
 import br.com.erudio.exceptions.ResourceNotFoundException;
 import br.com.erudio.models.Livro;
 import br.com.erudio.repositories.LivroRepository;
@@ -38,6 +39,8 @@ public class LivroService {
 	public Livro create(Livro livro) {
 		logger.info(">: salvando um novo livro");
 		
+		if (livro == null) throw new RequiredObjectIsNullExceptions();
+		
 		Livro newLivro = repository.save(livro);
 		return newLivro;
 	}
@@ -45,6 +48,8 @@ public class LivroService {
 	public Livro update(Livro livro) {
 		
 		logger.info(">: Atualizando o livro");
+		
+		if (livro == null) throw new RequiredObjectIsNullExceptions();
 		
 		Livro entity = repository.findById(livro.getId()).orElseThrow(
 				() -> new ResourceNotFoundException("<:Livro não encontrado"));
