@@ -16,9 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.erudio.data.vo.v1.PersonDTO;
 import br.com.erudio.services.PersonService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.media.*;
+
 
 @RestController()
 @RequestMapping("/api/persons")
+@Tag(name = "People", description = "Edpoint fo managing People")
 public class PersonController {
 
 	@Autowired
@@ -33,6 +40,21 @@ public class PersonController {
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@Operation(
+			summary = "busca todas as pessoas", 
+			description="", 
+			tags= {"People"}, 
+			responses = {
+					@ApiResponse(description = "Success", responseCode = "200", 
+							content = {
+									@Content(
+											mediaType = "application/json",
+											array = @ArraySchema(schema = @Schema(implementation = PersonDTO.class))
+											)
+							}),
+					@ApiResponse(description = "Success", responseCode = "200", 
+							content = @Content)
+			})
 	public List<PersonDTO> findAll() {
 		return service.findAll();
 	}
