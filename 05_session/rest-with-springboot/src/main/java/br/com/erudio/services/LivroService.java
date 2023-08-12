@@ -2,6 +2,7 @@ package br.com.erudio.services;
 
 import java.util.logging.Logger;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,17 +52,25 @@ public class LivroService {
 		
 		if (livro == null) throw new RequiredObjectIsNullExceptions();
 		
-		Livro entity = repository.findById(livro.getId()).orElseThrow(
-				() -> new ResourceNotFoundException("<:Livro não encontrado"));
+		//Livro entity = repository.findById(livro.getId()).orElseThrow(
+			//	() -> new ResourceNotFoundException("<:Livro não encontrado"));
 		
-		entity.setTitulo(livro.getTitulo());
-		entity.setEditora(livro.getEditora());
-		entity.setAutores(livro.getAutores());
-		entity.setAno(livro.getAno());
+		Optional<Livro> entity = repository.findById(livro.getId());
 		
-		repository.save(entity);
+		if (entity.isEmpty()) {
+			throw new ResourceNotFoundException("<:Livro não encontrado");
+		}
+		
+		Livro model = entity.get();
+		
+		model.setTitulo(livro.getTitulo());
+		model.setEditora(livro.getEditora());
+		model.setAutores(livro.getAutores());
+		model.setAno(livro.getAno());
+		
+		repository.save(model);
 				
-		return entity;
+		return model;
 	}
 
 	public void delete(int id) {
